@@ -2311,19 +2311,19 @@ button,
   margin: 40px auto;
   position: relative;
 }
+.milestone::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 158px;
+  width: 4px;
+  height: 100%;
+  background-color: #f56a6a;
+}
 .milestone-item {
   display: flex;
   align-items: flex-start;
   margin-bottom: 30px;
-}
-.milestone::before {
-    content: '';
-    position: absolute;
-    top: 5px;
-    left: 158px;
-    width: 4px;
-    height: 100%;
-    background-color: #f56a6a;
 }
 .milestone-date {
   width: 120px;
@@ -2367,6 +2367,14 @@ button,
   margin-bottom: 0;
   margin-left: 20px;
 }
+.milestone-content image {
+  display: block;
+  margin: 0 0 1em 0; }
+  .milestone-content .image img {
+    display: block;
+    width: 100%;
+    max-height: 175px; }
+
 
 /* Skill Tags */
 .skills-list {

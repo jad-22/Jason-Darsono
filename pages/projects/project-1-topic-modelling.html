@@ -35,34 +35,137 @@
 							<!-- Content -->
 								<section>
 									<header class="main">
-										<h1>Project Template</h1>
+										<h1>Topic Modelling on User Activities</h1>
+                                        <blockquote>A user's web journey tells a lot about the user's preferences. By modelling the topic content of the websites visited, we deepen our understanding of the interests of online audiences and potentially perform further user segmentation and/or recommendation.</blockquote>
+                                        <p>Retail Marketing Analytics | April 2023</p>
 									</header>
 
-									<span class="image main"><img src="../../images/pic11.jpg" alt="" /></span>
+									<span class="image main"><img src="project_images/project-1-user-journey.jpg" alt="Topic Modelling User Journey" /></span>
+                                    
+                                    <ul>
+                                        <span>Tags: &nbsp</span>
+                                        <li class="action-tag">Natural Language Processing</li>
+                                        <li class="action-tag">Web Scraping</li>
+                                        <li class="action-tag">Topic Modelling</li>
+                                        <li class="skill-tag">Python</li>
+                                        <li class="skill-tag">Jupyter Notebook</li>
+                                        <li class="skill-tag">PowerPoint</li>
+                                    </ul>
 
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit.</p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p>
-									<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+									<hr class="minor" style="width: 20%"/>
+                                    
+									<h2>Motivation - Understanding Online Audiences</h2>
+                                    <p>Discovering user profiles in the digital realm is essential for crafting personalised web experiences. While the traditional approach to customer segmentation relies on demographic data, such as age, gender, and income, collecting such information from online users may prove challenging. An alternative strategy centres on users' online behaviours, such as page visits, timing, and active periods. This project delves into these behaviours by extracting key topics from the web content users engage with, also known as topic modelling.</p>
+                                    <p>One approach involves manually assigning pre-defined categories to websites, but such a process is extremely time-consuming, particularly when dealing with a large volume of data. Therefore, we need a model capable of autonomously assigning URLs to relevant topics that capture the essence of the respective web pages. The primary goal of this project is to develop a model that can efficiently execute this task with ample speed and accuracy.</p>                                    
 
-									<hr class="major" />
+									<h2>What is Topic Modelling?</h2>
+									<p>Topic modelling is a technique in natural language processing and machine learning used to discover the main topics or themes within a collection of text documents. It is particularly valuable when dealing with a large amount of unstructured text data, such as articles, books, or social media posts, to understand the prevalent subjects or concepts in the text. One of the most commonly used algorithms for topic modelling is Latent Dirichlet Allocation (LDA). LDA works by analysing the co-occurrence patterns of words in documents to uncover these latent topics.</p>
+                                    <p>In this project, we utilise topic modelling to extract information and classify content from various web pages. We will explore LDA, its predecessor Latent Semantic Indexing (LSI), as well as Non-Negative Matrix Factorization (NMF).</p>
 
-									<h2>Interdum sed dapibus</h2>
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit.</p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+									<h2>End-to-end Approach</h2>
+									<p>Before modelling the topics, several essential steps should be taken into account both before and after the modeling process. These include tasks like web scraping, text preprocessing, and subsequent topic evaluation.</p>
+									<span class="image main"><img src="project_images/project-1-approach.png" alt="Topic Modelling Approach" /></span>
+                                    
+                                    <h3>Web Scraping</h3>
+                                    <p>
+                                        To get the content of the web pages, we perform web scraping using the URLs. We use the standard Python library for web scraping <code>requests</code> to retreive web response and then <code>BeautifulSoup</code> to parse specific HTML tags.
+                                        We only retreive web response if the status code is 200 i.e. successful request and focus on relevant tags such as <code>title, headers, p</code>.
+                                    <pre><code style="padding-top: 0%; padding-bottom:0%;">
+import requests
+from bs4 import BeautifulSoup
 
-									<hr class="major" />
+response = requests.get(url, timeout=5)
+if response.status_code == 200:
+    content = BeautifulSoup(response.text, 'html.parser')
+    content = content.find_all(['title', 'h1', 'h2', 'h3', 'p'])
+                                    </code></pre>
+                                    </p>
 
-									<h2>Magna etiam veroeros</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p>
-									<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+                                    <h3>Text Pre-Processing</h3>
+                                    <p>There are three steps involved in processing the texts data before they are ready to be modelled.</p>
+                                    
+                                    <h4>1. Tokenisation</h4>
+                                    <p>
+                                        We first split the parsed texts into individual tokens for subsequent processing and analysis.
+                                        To tokenise, we can simply split by space delimiter <code>tokens = content.split()</code> which will return a list of tokens.
+                                        To perform a cleaner tokenisation along with subsequent processing, we can use <code>gensim</code> package or <code>spacy</code> as such:
+                                        <pre><code style="padding-top: 0%; padding-bottom:0%;">
+import spacy
+from spacy.lang.en import english
 
-									<hr class="major" />
+# Load SpaCy 'small English' dictionary for parsing text and performing lemmatisation
+nlp = spacy.load("en_core_web_sm")
+tokenised = English(nlp(content))
+                                        </code></pre>
+                                    </p>
 
-									<h2>Lorem aliquam bibendum</h2>
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit.</p>
+                                    <h4>2. Normalisation</h4>
+                                    <p>
+                                        Next, we normalise the tokens by cutting each word to their base form, which can be done via stemming or lemmatisation.
+                                        There are several packages and method we explored including NLTK's porter and snowball stemmer, but we found that SpaCy's lemmas give a better coverage and accuracy, albeit slightly slower speed.
+                                        We can retreive SpaCy's lemmas as follows:
+                                        <pre><code style="padding-top: 0%; padding-bottom:0%;">
+lemmas = [token.lemma_.lower().strip() for token in tokenised]]
+                                        </code></pre>
+                                    </p>
+                                    
+                                    <h4>3. Stopwords removal</h4>
+                                    <p>
+                                        Lastly, we remove stopwords from the list of tokens, as well as those with less than 3 characters to reduce redundancy.
+                                        We also remove tokens that only contains punctuations or special characters.
+                                        To get the stopwords and punctuations, we create a list from NLTK's and SpaCy's stopword corpus. 
+                                        <pre><code style="padding-top: 0%; padding-bottom:0%;">
+import string, re, nltk
+from nltk.corpus import stopwords
+from spacy.lang.en.stop_words import STOP_WORDS
+
+# Consolidate stopwords from NLTK and SpaCy for stopwords removal
+nltk.download("stopwords")
+nltk_stopwords = nltk.corpus.stopwords.words("english")
+spacy_stopwords = list(STOP_WORDS)
+all_stopwords = list(set(nltk_stopwords + spacy_stopwords))
+
+# Consolidate punctuations, numbers and special characters for text cleaning by RegEx matching
+default_puncs = string.punctuation
+edge_cases = "â©â£–“”’…"
+numbers = "0-9"
+pattern = re.compile("[" + default_puncs + edge_cases + numbers + "]+")
+                                        </code></pre>
+                                    </p>
+                                    
+                                    <p>
+                                        We can then use the stopwords and punctuations to clean and finalise the list of tokens:
+                                        <pre><code style="padding-top: 0%; padding-bottom:0%;">
+cleaned_tokens = [re.sub(pattern, "", token) for token in lemmas 
+                    if token not in all_stopwords
+                    and token not in list(punctuations)
+                    and len(token) >= 3
+                    ]
+                                        </code></pre>
+                                    </p>
+                                    
+                                    <h3>N-gram modelling</h3>
+                                    <p>combining words into word-pairs or phrases to capture contextual meaning</p>
+
+                                    <h3>Topic Modelling</h3>
+                                    <p>We then pass the pre-processed tokens into the topic modelling algorithm. We can utilise readily available algorithm from <code>sklearn</code></p>
+
+                                    <h3>Evaluation</h3>
+                                    <p>To evaluate the topics, we can perform sample QC to check. </p>
+
+									<h2>Conclusion</h2>
+									<p></p>
 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p>
 
 								</section>
+
+                                <footer id="footer">
+                                    <ul class="actions" style="justify-content: center;">
+                                        <li><a href="index.html">Back to home</a></li>
+                                        <li><a href="#">Back to top</a></li>
+                                    </ul>
+									<p class="copyright">&copy; Jason Darsono. All rights reserved. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
 
 						</div>
 					</div>

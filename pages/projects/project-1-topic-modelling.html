@@ -59,17 +59,18 @@
                                     <p>One approach involves manually assigning pre-defined categories to websites, but such a process is extremely time-consuming, particularly when dealing with a large volume of data. Therefore, we need a model capable of autonomously assigning URLs to relevant topics that capture the essence of the respective web pages. The primary goal of this project is to develop a model that can efficiently execute this task with ample speed and accuracy.</p>                                    
 
 									<h2>What is Topic Modelling?</h2>
-									<p>Topic modelling is a technique in natural language processing and machine learning used to discover the main topics or themes within a collection of text documents. It is particularly valuable when dealing with a large amount of unstructured text data, such as articles, books, or social media posts, to understand the prevalent subjects or concepts in the text. One of the most commonly used algorithms for topic modelling is Latent Dirichlet Allocation (LDA). LDA works by analysing the co-occurrence patterns of words in documents to uncover these latent topics.</p>
+									<p><strong>Topic modelling is a technique in natural language processing and machine learning used to discover the main topics or themes within a collection of text documents.</strong> It is particularly valuable when dealing with a large amount of unstructured text data, such as articles, books, or social media posts, to understand the prevalent subjects or concepts in the text. One of the most commonly used algorithms for topic modelling is Latent Dirichlet Allocation (LDA). LDA works by analysing the co-occurrence patterns of words in documents to uncover these latent topics.</p>
                                     <p>In this project, we utilise topic modelling to extract information and classify content from various web pages. We will explore LDA, its predecessor Latent Semantic Indexing (LSI), as well as Non-Negative Matrix Factorization (NMF).</p>
 
 									<h2>End-to-end Approach</h2>
 									<p>Before modelling the topics, several essential steps should be taken into account both before and after the modeling process. These include tasks like web scraping, text preprocessing, and subsequent topic evaluation.</p>
+
 									<span class="image main"><img src="project_images/project-1-approach.png" alt="Topic Modelling Approach" /></span>
                                     
                                     <h3>Web Scraping</h3>
                                     <p>
                                         To get the content of the web pages, we perform web scraping using the URLs. We use the standard Python library for web scraping <code>requests</code> to retreive web response and then <code>BeautifulSoup</code> to parse specific HTML tags.
-                                        We only retreive web response if the status code is 200 i.e. successful request and focus on relevant tags such as <code>title, headers, p</code>.
+                                        We <strong>only retreive web response if the status code is 200</strong> i.e. successful request and focus on relevant tags such as <code>title, headers, p</code>.
                                     <pre><code style="padding-top: 0%; padding-bottom:0%;">
 import requests
 from bs4 import BeautifulSoup
@@ -102,34 +103,42 @@ tokenised = English(nlp(content))
                                     <h4>2. Normalisation</h4>
                                     <p>
                                         Next, we normalise the tokens by cutting each word to their base form, which can be done via stemming or lemmatisation.
-                                        There are several packages and method we explored including NLTK's porter and snowball stemmer, but we found that SpaCy's lemmas give a better coverage and accuracy, albeit slightly slower speed.
-                                        We can retreive SpaCy's lemmas as follows:
+                                        There are several packages and method we explored including NLTK's porter and snowball stemmer, but we found that <strong>SpaCy's lemmas give a slightly better coverage and accuracy</strong>, albeit slower speed.
+                                        However, if execution speed is a concern, NLTK's packages would be a better option.
+                                    </p>    
+                                    <p>We can retreive SpaCy's lemmas as follows:
                                         <pre><code style="padding-top: 0%; padding-bottom:0%;">
-lemmas = [token.lemma_.lower().strip() for token in tokenised]]
+lemmas = [token.lemma_.lower().strip() for token in tokenised]
                                         </code></pre>
                                     </p>
                                     
-                                    <h4>3. Stopwords removal</h4>
+                                    <h4>3. Text Cleaning</h4>
                                     <p>
-                                        Lastly, we remove stopwords from the list of tokens, as well as those with less than 3 characters to reduce redundancy.
-                                        We also remove tokens that only contains punctuations or special characters.
-                                        To get the stopwords and punctuations, we create a list from NLTK's and SpaCy's stopword corpus. 
+                                        Lastly, we clean the tokens by removing stopwords from the list of tokens, as well as those with less than 3 characters to reduce redundancy.
+                                        We also remove punctuations, numbers and special characters from each token.
+                                    </p>
+                                    <p>
+                                        To get the stopwords, we create a list from NLTK's and SpaCy's stopword corpus. 
                                         <pre><code style="padding-top: 0%; padding-bottom:0%;">
-import string, re, nltk
+import nltk
 from nltk.corpus import stopwords
 from spacy.lang.en.stop_words import STOP_WORDS
 
-# Consolidate stopwords from NLTK and SpaCy for stopwords removal
 nltk.download("stopwords")
-nltk_stopwords = nltk.corpus.stopwords.words("english")
+nltk_stopwords = stopwords.words("english")
 spacy_stopwords = list(STOP_WORDS)
 all_stopwords = list(set(nltk_stopwords + spacy_stopwords))
+                                        </code></pre>
+                                    </p>
+                                    <p>
+                                        To remove punctuations, numbers and special characters, we use regular expression (regex) matching by compiling the patterns.
+                                        <pre><code style="padding-top: 0%; padding-bottom:0%;">
+import string, re
 
-# Consolidate punctuations, numbers and special characters for text cleaning by RegEx matching
 default_puncs = string.punctuation
-edge_cases = "â©â£–“”’…"
+special_chars = "â©â£–“”’…"
 numbers = "0-9"
-pattern = re.compile("[" + default_puncs + edge_cases + numbers + "]+")
+pattern = re.compile("[" + default_puncs + special_chars + numbers + "]+")
                                         </code></pre>
                                     </p>
                                     
@@ -145,18 +154,68 @@ cleaned_tokens = [re.sub(pattern, "", token) for token in lemmas
                                     </p>
                                     
                                     <h3>N-gram modelling</h3>
-                                    <p>combining words into word-pairs or phrases to capture contextual meaning</p>
+                                    <p>
+                                        Now that the texts data have been tokenised and cleaned, we pass it to N-gram models.
+                                        <strong>N-gram models combine multiple tokens into one to form contextual meaning.</strong>
+                                        A single token is considered as uni-gram, word-pairs are bi-grams, and so on.
+                                        For example, a bi-gram token can be "variable rate", "living cost", etc.
+                                        This project utilise bi-gram model as we found that it gave a better performance than uni-gram and tri-gram.
+                                    </p>
+                                    <p>
+                                        To generate bi-gram word-pairs, we use the list of tokens and pass it into <code>gensim</code>'s phrases model.
+                                        From the newly generated tokens, we build the id-to-word (id2word) matrix and the bag-of-word (BoW) corpus.
+                                        The bag-of-words (BoW) is a vector representation of how many times a token appears in the document, while id-to-word is literally the mapping of token indices to the tokens in the dictionary.
+                                        <pre><code style="padding-top: 0%; padding-bottom:0%;">
+from gensim import corpora
+from gensim.models.phrases import Phrases, ENGLISH_CONNECTOR_WORDS
+
+# Build bigram phrase model
+bigram = Phrases(tokens_list, connector_words=ENGLISH_CONNECTOR_WORDS)
+
+# Generate tokens
+bigram_tokens = bigram[tokens_list]
+
+# Create the id-to-word matrix dictionary
+id2word = corpora.Dictionary(bigram_tokens)
+
+# Build the bag-of-word (bow) corpus
+corpus = [id2word.doc2bow(token) for token in bigram_tokens]
+                                        </code></pre>
+                                    </p>
 
                                     <h3>Topic Modelling</h3>
-                                    <p>We then pass the pre-processed tokens into the topic modelling algorithm. We can utilise readily available algorithm from <code>sklearn</code></p>
+                                    <p>
+                                        We then pass the id2word and BoW corpus into the topic modelling algorithm.
+                                        We utilise readily available algorithm from <code>gensim</code> (but can also be done using <code>sklearn</code>) as follows:
+                                        <pre><code style="padding-top: 0%; padding-bottom:0%;">
+from gensim.models import ldamodel
+
+model = ldamodel.LdaModel(
+    corpus=corpus,
+    id2word=id2word,
+    num_topics=6,
+    random_state=123
+)
+                                        </code></pre>
+                                        
+                                        The parameter <code>num_topics</code> determines the number of latent topic clusters to detect, while fixing <code>random_state</code> allows reproducibility.
+                                        Similarly, we can perform topic modelling using non-matrix factorisation (NMF) and latent semantic indexing using <code>from gensim.models import Nmf, lsimodel</code>.
+                                    </p>
+                                    <p>
+                                        <strong>But what is the difference between LDA, NMF and LSI?</strong>
+                                        LDA is a more popular approach, because it is a probabilistic
+                                    </p>
 
                                     <h3>Evaluation</h3>
                                     <p>To evaluate the topics, we can perform sample QC to check. </p>
 
 									<h2>Conclusion</h2>
-									<p></p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p>
-
+									<p>
+                                        Of course the process is not as simple is shown above. 
+                                        There are various steps involved which were not mentioned such as data exploration, process selection, model fine-tuning, manual benchmarking, deep-dive and evaluation.
+                                        However the steps and processes outlined above captures the general essence of this project.
+                                        There are still many more to learn from this project and many more ways to improve on it.
+                                    </p>
 								</section>
 
                                 <footer id="footer">
